@@ -11,20 +11,20 @@ import java.util.stream.Stream;
 @RequestMapping("management/api/v1/students")
 @Slf4j
 public class StudentManagementController {
-    private static final List<Student> STUDENT_LIST = Stream.of(
-            new Student(1, "James Bond"),
-            new Student(2, "Maria Jones"),
-            new Student(3, "Anna Smith")
+    private static final List<StudentFullInfoDto> STUDENT_BASIC_INFO_DTO_LIST = Stream.of(
+            new StudentFullInfoDto(1, "James Bond", "11-225-8-44", "90022545114"),
+            new StudentFullInfoDto(2, "Maria Jones", "81-595-9-488", "8801114114"),
+            new StudentFullInfoDto(3, "Anna Smith", "777-15-8-794", "5112584744")
     ).toList();
 
     @GetMapping
-    public List<Student> getAllStudents() {
-        return new ArrayList<>(STUDENT_LIST);
+    public List<StudentFullInfoDto> getAllStudents() {
+        return new ArrayList<>(STUDENT_BASIC_INFO_DTO_LIST);
     }
 
     @PostMapping
-    public void registerNewStudent(@RequestBody Student student) {
-        log.info("Registering a student: " + student);
+    public void registerNewStudent(@RequestBody StudentFullInfoDto studentFullInfoDto) {
+        log.info("Registering a student: " + studentFullInfoDto);
     }
 
     @DeleteMapping(path = "{studentId}")
@@ -33,7 +33,7 @@ public class StudentManagementController {
     }
 
     @PutMapping(path = "{studentId}")
-    public void updateNewStudent(@PathVariable("studentId") Integer studentId, @RequestBody Student student) {
-        log.info("Updating a student id={} ==> {}", studentId, student);
+    public void updateNewStudent(@PathVariable("studentId") Integer studentId, @RequestBody StudentFullInfoDto studentFullInfoDto) {
+        log.info("Updating a student id={} ==> {}", studentId, studentFullInfoDto);
     }
 }

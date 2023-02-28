@@ -1,7 +1,6 @@
 package com.gitlab.emradbuba.learning.springsecuritycourse.student;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,17 +11,14 @@ import java.util.stream.Stream;
 @RequestMapping("api/v1/students")
 public class StudentController {
 
-    private static final List<Student> STUDENT_LIST = Stream.of(
-            new Student(1, "James Bond"),
-            new Student(2, "Maria Jones"),
-            new Student(3, "Anna Smith")
+    private static final List<StudentBasicInfoDto> STUDENT_BASIC_INFO_DTO_LIST = Stream.of(
+            new StudentBasicInfoDto(1, "James Bond"),
+            new StudentBasicInfoDto(2, "Maria Jones"),
+            new StudentBasicInfoDto(3, "Anna Smith")
             ).toList();
 
-    @GetMapping(path = "{studentId}")
-    public Student getStudent(@PathVariable("studentId") Integer studentId) {
-        return STUDENT_LIST.stream()
-                .filter(student -> studentId.equals(student.getStudentId()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Student " + studentId + " does not exist"));
+    @GetMapping
+    public List<StudentBasicInfoDto> getStudents() {
+        return STUDENT_BASIC_INFO_DTO_LIST.stream().toList();
     }
 }

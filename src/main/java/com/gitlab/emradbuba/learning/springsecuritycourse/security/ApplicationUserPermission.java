@@ -1,18 +1,18 @@
 package com.gitlab.emradbuba.learning.springsecuritycourse.security;
 
 public enum ApplicationUserPermission {
-    STUDENT_READ_PERM("student:read"),
-    STUDENT_WRITE_PERM("student:write"),
-    COURSE_READ_PERM("course:read"),
-    COURSE_WRITE_PERM("course:write");
+    PERMISSION_STUDENT_BASIC_CONTENT_READ("student:read-basic"),
+    PERMISSION_STUDENT_ALL_CONTENT_READ("student:read-all"),
+    PERMISSION_STUDENT_CONTENT_CREATE_OR_UPDATE("student:create-update"),
+    PERMISSION_STUDENT_CONTENT_DELETE("student:delete");
 
-    private final String permission;
+    private final String permissionName;
 
     ApplicationUserPermission(String permissionName) {
-        this.permission = permissionName;
+        this.permissionName = permissionName;
     }
 
     public String getPermissionName() {
-        return permission;
+        return permissionName;
     }
 }

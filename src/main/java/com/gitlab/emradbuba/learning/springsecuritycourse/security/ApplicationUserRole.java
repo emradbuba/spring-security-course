@@ -1,7 +1,6 @@
 package com.gitlab.emradbuba.learning.springsecuritycourse.security;
 
 import com.google.common.collect.Sets;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
@@ -10,9 +9,11 @@ import java.util.stream.Collectors;
 import static com.gitlab.emradbuba.learning.springsecuritycourse.security.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
-    STUDENT(Sets.newHashSet()),
-    ADMIN(Sets.newHashSet(COURSE_READ_PERM, COURSE_WRITE_PERM, STUDENT_READ_PERM, STUDENT_WRITE_PERM)),
-    ADMIN_JUNIOR(Sets.newHashSet(COURSE_READ_PERM, STUDENT_READ_PERM));
+    STUDENT(Sets.newHashSet(PERMISSION_STUDENT_BASIC_CONTENT_READ)),
+    JUNIOR_ADMIN(Sets.newHashSet(PERMISSION_STUDENT_BASIC_CONTENT_READ, PERMISSION_STUDENT_ALL_CONTENT_READ,
+            PERMISSION_STUDENT_CONTENT_CREATE_OR_UPDATE)),
+    MAIN_ADMIN(Sets.newHashSet(PERMISSION_STUDENT_BASIC_CONTENT_READ, PERMISSION_STUDENT_ALL_CONTENT_READ,
+            PERMISSION_STUDENT_CONTENT_CREATE_OR_UPDATE, PERMISSION_STUDENT_CONTENT_DELETE));
 
     private final Set<ApplicationUserPermission> permissions;
 
@@ -25,13 +26,12 @@ public enum ApplicationUserRole {
     }
 
     public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
-
-        Set<SimpleGrantedAuthority> permissions = getPermissions()
+        Set<SimpleGrantedAuthority> grantedAuthorities = getPermissions()
                 .stream()
                 .map(ApplicationUserPermission::getPermissionName)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
-        permissions.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
-        return permissions;
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+        return grantedAuthorities;
     }
 }

@@ -14,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static com.gitlab.emradbuba.learning.springsecuritycourse.security.ApplicationUserRole.*;
-
 @Configuration
 @EnableWebSecurity
 @Profile("custom")
@@ -36,11 +34,21 @@ public class ApplicationSecurityConfigNew {
                 .csrf().disable()
                 .authorizeRequests((auth) ->
                         auth.antMatchers("/", "index", "/css/*", "/js/*").permitAll()
-                                .antMatchers("/api/**").hasRole(STUDENT.name())
-                                .antMatchers(HttpMethod.DELETE, "management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE_PERM.name())
-                                .antMatchers(HttpMethod.POST, "management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE_PERM.name())
-                                .antMatchers(HttpMethod.PUT, "management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE_PERM.name())
-                                .antMatchers(HttpMethod.GET, "management/api/**").hasAnyRole(ADMIN.name(), ADMIN_JUNIOR.name())
+                                .antMatchers("/api/v1/students/**").hasAnyRole(ApplicationUserRole.STUDENT.name(), ApplicationUserRole.JUNIOR_ADMIN.name(), ApplicationUserRole.MAIN_ADMIN.name())
+                                //.antMatchers("/api/v1/students/**").hasAuthority(ApplicationUserPermission.PERMISSION_STUDENT_BASIC_CONTENT_READ.getPermissionName())
+                                //
+                                .antMatchers(HttpMethod.DELETE, "/management/**").hasRole(ApplicationUserRole.MAIN_ADMIN.name())
+                                //.antMatchers(HttpMethod.DELETE, "management/**").hasAuthority(ApplicationUserPermission.PERMISSION_ADMIN_CONTENT_CREATE_OR_UPDATE.name())
+                                //
+                                .antMatchers(HttpMethod.POST, "/management/**").hasAnyRole(ApplicationUserRole.MAIN_ADMIN.name(), ApplicationUserRole.JUNIOR_ADMIN.name())
+                                //.antMatchers(HttpMethod.POST, "management/**").hasAuthority(ApplicationUserPermission.PERMISSION_ADMIN_CONTENT_CREATE_OR_UPDATE.name())
+                                //
+                                .antMatchers(HttpMethod.PUT, "/management/**").hasAnyRole(ApplicationUserRole.MAIN_ADMIN.name(), ApplicationUserRole.JUNIOR_ADMIN.name())
+                                //.antMatchers(HttpMethod.PUT, "management/**").hasAuthority(ApplicationUserPermission.PERMISSION_ADMIN_CONTENT_CREATE_OR_UPDATE.name())
+                                //
+                                .antMatchers(HttpMethod.GET, "/management/**").hasAnyRole(ApplicationUserRole.MAIN_ADMIN.name(), ApplicationUserRole.JUNIOR_ADMIN.name())
+                                //.antMatchers(HttpMethod.GET, "management/**").hasAnyRole(MAIN_ADMIN.name(), JUNIOR_ADMIN.name())
+                                //
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .build();
@@ -48,23 +56,29 @@ public class ApplicationSecurityConfigNew {
 
     @Bean
     public UserDetailsService userDetailsService() {
+        var guest = User
+                .withUsername("guest")
+                .password(passwordEncoder.encode("guest123"))
+                .roles("GUEST")
+                .build();
         var studentDetails = User
                 .withUsername("student")
                 .password(passwordEncoder.encode("student123"))
-                //.roles(STUDENT.name()) // ROLE_STUDENT
-                .authorities(STUDENT.getGrantedAuthorities())
+                .roles(ApplicationUserRole.STUDENT.name()) // ROLE_STUDENT
+                //.authorities(STUDENT.getGrantedAuthorities())
+                .build();
+        var juniorAdminDetails = User
+                .withUsername("junioradmin")
+                .password(passwordEncoder.encode("junioradmin123"))
+                .roles(ApplicationUserRole.JUNIOR_ADMIN.name()) // ROLE_JUNIOR_ADMIN
+                //.authorities(MAIN_ADMIN.getGrantedAuthorities())// ROLE_ADMIN
                 .build();
         var adminDetails = User
                 .withUsername("admin")
                 .password(passwordEncoder.encode("admin123"))
-                .authorities(ADMIN.getGrantedAuthorities())// ROLE_ADMIN
+                .roles(ApplicationUserRole.MAIN_ADMIN.name())
+                //.authorities(JUNIOR_ADMIN.getGrantedAuthorities())
                 .build();
-        var adminJunior = User
-                .withUsername("junioradmin")
-                .password(passwordEncoder.encode("junioradmin123"))
-                //.roles(ApplicationUserRole.ADMIN_JUNIOR.name())
-                .authorities(ADMIN_JUNIOR.getGrantedAuthorities())
-                .build();
-        return new InMemoryUserDetailsManager(studentDetails, adminDetails, adminJunior);
+        return new InMemoryUserDetailsManager(guest, studentDetails, juniorAdminDetails, adminDetails);
     }
 }

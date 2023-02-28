@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -17,7 +16,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 @Profile("original")
 @Slf4j
-public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
+public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter { // WebSecurityConfigurerAdapter in SB 6.0 is officially not preferred
     private final PasswordEncoder passwordEncoder;
 
     public ApplicationSecurityConfig(PasswordEncoder passwordEncoder) {
@@ -49,7 +48,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         var userDetailsLinda = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin123"))
-                .roles(ApplicationUserRole.ADMIN.name())
+                .roles(ApplicationUserRole.MAIN_ADMIN.name())
                 .build();
         return new InMemoryUserDetailsManager(userDetailsStudent, userDetailsLinda);
     }
