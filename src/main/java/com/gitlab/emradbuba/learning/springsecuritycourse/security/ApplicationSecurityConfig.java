@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -39,11 +40,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
-        var userDetails = User
+        var userDetailsStudent = User
                 .withUsername("radek")
                 .password(passwordEncoder.encode("password"))
-                .roles("STUDENT") // ROLE_STUDENT
+                .roles(ApplicationUserRole.STUDENT.name()) // ROLE_STUDENT
                 .build();
-        return new InMemoryUserDetailsManager(userDetails);
+
+        var userDetailsLinda = User.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("admin123"))
+                .roles(ApplicationUserRole.ADMIN.name())
+                .build();
+        return new InMemoryUserDetailsManager(userDetailsStudent, userDetailsLinda);
     }
 }
