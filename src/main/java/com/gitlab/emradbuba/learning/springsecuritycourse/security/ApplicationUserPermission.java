@@ -1,10 +1,10 @@
 package com.gitlab.emradbuba.learning.springsecuritycourse.security;
 
 public enum ApplicationUserPermission {
-    PERMISSION_STUDENT_BASIC_CONTENT_READ("student:read-basic"),
-    PERMISSION_STUDENT_ALL_CONTENT_READ("student:read-all"),
-    PERMISSION_STUDENT_CONTENT_CREATE_OR_UPDATE("student:create-update"),
-    PERMISSION_STUDENT_CONTENT_DELETE("student:delete");
+    CAN_READ_BASIC_CONTENT("permission:read-basic"),
+    CAN_READ_FULL_CONTENT("permission:read-full"),
+    CAN_CREATE_AND_UPDATE("permission:create-and-update"),
+    CAN_DELETE("permission:delete");
 
     private final String permissionName;
 

@@ -34,8 +34,8 @@ public class ApplicationSecurityConfigNew {
                 .csrf().disable()
                 .authorizeRequests((auth) ->
                         auth.antMatchers("/", "index", "/css/*", "/js/*").permitAll()
-                                .antMatchers("/api/v1/students/**").hasAnyRole(ApplicationUserRole.STUDENT.name(), ApplicationUserRole.JUNIOR_ADMIN.name(), ApplicationUserRole.MAIN_ADMIN.name())
-                                //.antMatchers("/api/v1/students/**").hasAuthority(ApplicationUserPermission.PERMISSION_STUDENT_BASIC_CONTENT_READ.getPermissionName())
+                                //.antMatchers("/api/v1/students/**").hasAnyRole(ApplicationUserRole.STUDENT.name(), ApplicationUserRole.JUNIOR_ADMIN.name(), ApplicationUserRole.MAIN_ADMIN.name())
+                                .antMatchers("/api/v1/students/**").hasAuthority(ApplicationUserPermission.CAN_READ_BASIC_CONTENT.getPermissionName())
                                 //
                                 .antMatchers(HttpMethod.DELETE, "/management/**").hasRole(ApplicationUserRole.MAIN_ADMIN.name())
                                 //.antMatchers(HttpMethod.DELETE, "management/**").hasAuthority(ApplicationUserPermission.PERMISSION_ADMIN_CONTENT_CREATE_OR_UPDATE.name())
@@ -64,20 +64,20 @@ public class ApplicationSecurityConfigNew {
         var studentDetails = User
                 .withUsername("student")
                 .password(passwordEncoder.encode("student123"))
-                .roles(ApplicationUserRole.STUDENT.name()) // ROLE_STUDENT
-                //.authorities(STUDENT.getGrantedAuthorities())
+                //.roles(ApplicationUserRole.STUDENT.name()) // ROLE_STUDENT
+                .authorities(ApplicationUserRole.STUDENT.getGrantedAuthorities())
                 .build();
         var juniorAdminDetails = User
                 .withUsername("junioradmin")
                 .password(passwordEncoder.encode("junioradmin123"))
-                .roles(ApplicationUserRole.JUNIOR_ADMIN.name()) // ROLE_JUNIOR_ADMIN
-                //.authorities(MAIN_ADMIN.getGrantedAuthorities())// ROLE_ADMIN
+                //.roles(ApplicationUserRole.JUNIOR_ADMIN.name()) // ROLE_JUNIOR_ADMIN
+                .authorities(ApplicationUserRole.JUNIOR_ADMIN.getGrantedAuthorities())
                 .build();
         var adminDetails = User
                 .withUsername("admin")
                 .password(passwordEncoder.encode("admin123"))
-                .roles(ApplicationUserRole.MAIN_ADMIN.name())
-                //.authorities(JUNIOR_ADMIN.getGrantedAuthorities())
+                //.roles(ApplicationUserRole.MAIN_ADMIN.name()) // ROLE_MAIN_ADMIN
+                .authorities(ApplicationUserRole.MAIN_ADMIN.getGrantedAuthorities())
                 .build();
         return new InMemoryUserDetailsManager(guest, studentDetails, juniorAdminDetails, adminDetails);
     }

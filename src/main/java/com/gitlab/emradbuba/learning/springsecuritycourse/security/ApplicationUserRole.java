@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 import static com.gitlab.emradbuba.learning.springsecuritycourse.security.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
-    STUDENT(Sets.newHashSet(PERMISSION_STUDENT_BASIC_CONTENT_READ)),
-    JUNIOR_ADMIN(Sets.newHashSet(PERMISSION_STUDENT_BASIC_CONTENT_READ, PERMISSION_STUDENT_ALL_CONTENT_READ,
-            PERMISSION_STUDENT_CONTENT_CREATE_OR_UPDATE)),
-    MAIN_ADMIN(Sets.newHashSet(PERMISSION_STUDENT_BASIC_CONTENT_READ, PERMISSION_STUDENT_ALL_CONTENT_READ,
-            PERMISSION_STUDENT_CONTENT_CREATE_OR_UPDATE, PERMISSION_STUDENT_CONTENT_DELETE));
+    STUDENT(Sets.newHashSet(CAN_READ_BASIC_CONTENT)),
+    JUNIOR_ADMIN(Sets.newHashSet(CAN_READ_BASIC_CONTENT, CAN_READ_FULL_CONTENT,
+            CAN_CREATE_AND_UPDATE)),
+    MAIN_ADMIN(Sets.newHashSet(CAN_READ_BASIC_CONTENT, CAN_READ_FULL_CONTENT,
+            CAN_CREATE_AND_UPDATE, CAN_DELETE));
 
     private final Set<ApplicationUserPermission> permissions;
 
