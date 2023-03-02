@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -18,6 +19,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Profile("custom")
 @Slf4j
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true)
 public class ApplicationSecurityConfigNew {
 
     private final PasswordEncoder passwordEncoder;
@@ -34,6 +39,8 @@ public class ApplicationSecurityConfigNew {
                 .csrf().disable()
                 .authorizeRequests((auth) ->
                         auth.antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                                .antMatchers("/api/v1/unsecured/**").permitAll()
+                                //
                                 //.antMatchers("/api/v1/students/**").hasAnyRole(ApplicationUserRole.STUDENT.name(), ApplicationUserRole.JUNIOR_ADMIN.name(), ApplicationUserRole.MAIN_ADMIN.name())
                                 .antMatchers("/api/v1/students/**").hasAuthority(ApplicationUserPermission.CAN_READ_BASIC_CONTENT.getPermissionName())
                                 //
@@ -69,7 +76,7 @@ public class ApplicationSecurityConfigNew {
                 .build();
         var juniorAdminDetails = User
                 .withUsername("junioradmin")
-                .password(passwordEncoder.encode("junioradmin123"))
+                .password(passwordEncoder.encode("admin123"))
                 //.roles(ApplicationUserRole.JUNIOR_ADMIN.name()) // ROLE_JUNIOR_ADMIN
                 .authorities(ApplicationUserRole.JUNIOR_ADMIN.getGrantedAuthorities())
                 .build();

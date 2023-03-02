@@ -13,7 +13,7 @@ public enum ApplicationUserRole {
     JUNIOR_ADMIN(Sets.newHashSet(CAN_READ_BASIC_CONTENT, CAN_READ_FULL_CONTENT,
             CAN_CREATE_AND_UPDATE)),
     MAIN_ADMIN(Sets.newHashSet(CAN_READ_BASIC_CONTENT, CAN_READ_FULL_CONTENT,
-            CAN_CREATE_AND_UPDATE, CAN_DELETE));
+            CAN_CREATE_AND_UPDATE, CAN_DELETE, CAN_ACCESS_TOP_SECRET_DATA));
 
     private final Set<ApplicationUserPermission> permissions;
 
