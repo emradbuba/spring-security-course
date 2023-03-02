@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +38,7 @@ public class ApplicationSecurityConfigNew {
         log.info("Configuring CUSTOM security from course");
         return httpSecurity
                 .csrf().disable()
+                //.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .authorizeRequests((auth) ->
                         auth.antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                                 .antMatchers("/api/v1/unsecured/**").permitAll()
