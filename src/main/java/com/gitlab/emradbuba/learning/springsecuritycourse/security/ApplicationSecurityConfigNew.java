@@ -16,6 +16,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import java.util.concurrent.TimeUnit;
+
 @Configuration
 @EnableWebSecurity
 @Profile("custom")
@@ -63,8 +65,17 @@ public class ApplicationSecurityConfigNew {
                 .formLogin()
                 .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/afterLogin", true)
+                .and().rememberMe()
+                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21L))
+                    .key("the-remember-me-key")
                 .and()
-                .build();
+                .logout()
+                    .logoutUrl("/logout")
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login")
+                .and().build();
     }
 
     @Bean
