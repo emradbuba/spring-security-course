@@ -59,7 +59,11 @@ public class ApplicationSecurityConfigNew {
                                 //.antMatchers(HttpMethod.GET, "management/**").hasAnyRole(MAIN_ADMIN.name(), JUNIOR_ADMIN.name())
                                 //
                                 .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
+                //.httpBasic(Customizer.withDefaults())
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/afterLogin", true)
+                .and()
                 .build();
     }
 
