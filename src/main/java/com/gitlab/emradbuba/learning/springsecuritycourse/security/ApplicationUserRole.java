@@ -1,6 +1,7 @@
 package com.gitlab.emradbuba.learning.springsecuritycourse.security;
 
 import com.google.common.collect.Sets;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
@@ -25,8 +26,8 @@ public enum ApplicationUserRole {
         return permissions;
     }
 
-    public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
-        Set<SimpleGrantedAuthority> grantedAuthorities = getPermissions()
+    public Set<GrantedAuthority> getGrantedAuthorities() {
+        Set<GrantedAuthority> grantedAuthorities = getPermissions()
                 .stream()
                 .map(ApplicationUserPermission::getPermissionName)
                 .map(SimpleGrantedAuthority::new)
