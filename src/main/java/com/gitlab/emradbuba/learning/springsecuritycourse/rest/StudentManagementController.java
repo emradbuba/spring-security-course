@@ -1,5 +1,6 @@
-package com.gitlab.emradbuba.learning.springsecuritycourse.student;
+package com.gitlab.emradbuba.learning.springsecuritycourse.rest;
 
+import com.gitlab.emradbuba.learning.springsecuritycourse.rest.model.StudentFullInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 

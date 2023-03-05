@@ -1,5 +1,6 @@
-package com.gitlab.emradbuba.learning.springsecuritycourse.student;
+package com.gitlab.emradbuba.learning.springsecuritycourse.rest;
 
+import com.gitlab.emradbuba.learning.springsecuritycourse.rest.model.StudentBasicInfoDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

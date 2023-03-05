@@ -1,8 +1,7 @@
-package com.gitlab.emradbuba.learning.springsecuritycourse.student;
+package com.gitlab.emradbuba.learning.springsecuritycourse.rest;
 
 import com.gitlab.emradbuba.learning.springsecuritycourse.secret.TopSecretDataService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
