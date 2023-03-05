@@ -1,4 +1,4 @@
-package com.gitlab.emradbuba.learning.springsecuritycourse.security;
+package com.gitlab.emradbuba.learning.springsecuritycourse.security.authorities;
 
 public enum ApplicationUserPermission {
     CAN_READ_BASIC_CONTENT("permission:read-basic"),
